@@ -1,16 +1,22 @@
 package br.com.alura.comex.model;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "categorias")
-public class Categoria {
+public class Categoria implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Size(min = 2)
     private String nome;
 
     @Enumerated(EnumType.STRING)
@@ -51,9 +57,8 @@ public class Categoria {
         this.produtos = produtos;
     }
 
-    public void adicionaProduto(Produto produto){
+    public void adicionaProduto(Produto produto) {
         produto.setCategoria(this);
         this.produtos.add(produto);
     }
-
 }

@@ -16,3 +16,8 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     defer-datasource-initialization: true
+
+server:
+  servlet:
+    context-path: /api
+
