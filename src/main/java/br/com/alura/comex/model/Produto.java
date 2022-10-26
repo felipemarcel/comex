@@ -11,6 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "produtos")
@@ -20,17 +23,23 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Size(min = 2)
     @Column(nullable = false)
     private String nome;
 
     private String descricao;
 
+    @NotNull
+    @Min(value = 0)
     @Column(name = "preco_unitario", nullable = false)
     private BigDecimal precoUnitario;
 
+    @NotNull
     @Column(name = "quantidade_estoque", nullable = false)
     private int quantidadeEstoque;
 
+    @NotNull
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Categoria categoria;
 
