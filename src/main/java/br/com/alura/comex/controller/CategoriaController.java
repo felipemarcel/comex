@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 import static org.springframework.http.ResponseEntity.created;
@@ -23,7 +24,7 @@ public class CategoriaController {
     private CategoriaService service;
 
     @PostMapping
-    public ResponseEntity<CategoriaDTO> save(@RequestBody Categoria categoria, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<CategoriaDTO> save(@RequestBody @Valid Categoria categoria, UriComponentsBuilder uriBuilder) {
         Categoria categoriaSalva = service.save(categoria);
         URI uri = uriBuilder.path("/produtos/{id}").buildAndExpand(categoriaSalva.getId()).toUri();
         return created(uri).body(CategoriaDTO.from(categoriaSalva));
