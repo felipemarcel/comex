@@ -1,5 +1,6 @@
 package br.com.alura.comex.service;
 
+import br.com.alura.comex.exception.NotFoundException;
 import br.com.alura.comex.model.Produto;
 import br.com.alura.comex.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,23 @@ public class ProdutoService {
 
     public Produto save(Produto produto) {
         return repository.save(produto);
+    }
+
+    public Produto findBy(Long id) {
+        return repository.findById(id).orElseThrow(() -> NotFoundException.notFoundException(id));
+    }
+
+    public Produto update(Produto produto, Long id) {
+        Produto produtoRecuperado = findBy(id);
+        produtoRecuperado.setCategoria(produto.getCategoria());
+        produtoRecuperado.setPrecoUnitario(produto.getPrecoUnitario());
+        produtoRecuperado.setDescricao(produto.getDescricao());
+        produtoRecuperado.setQuantidadeEstoque(produto.getQuantidadeEstoque());
+
+        return repository.save(produtoRecuperado);
+    }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }

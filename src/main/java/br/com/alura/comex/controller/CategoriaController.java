@@ -9,9 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.net.URI;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -35,7 +38,7 @@ public class CategoriaController {
     @PostMapping
     public ResponseEntity<CategoriaDTO> save(@RequestBody @Valid Categoria categoria, UriComponentsBuilder uriBuilder) {
         Categoria categoriaSalva = service.save(categoria);
-        URI uri = uriBuilder.path("/produtos/{id}").buildAndExpand(categoriaSalva.getId()).toUri();
+        URI uri = uriBuilder.path("/categoria/{id}").buildAndExpand(categoriaSalva.getId()).toUri();
         return created(uri).body(CategoriaDTO.from(categoriaSalva));
     }
 
@@ -45,11 +48,19 @@ public class CategoriaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoriaDTO> findById(@PathVariable("id") Long id) {
-        Categoria categoria = service
-                .findById(id)
-                .orElseThrow(() -> NotFoundException.notFoundException(id));
-
+    public ResponseEntity<CategoriaDTO> findById(@PathVariable("id") @Min(1) Long id) {
+        Categoria categoria = service.findById(id);
         return ok().body(CategoriaDTO.from(categoria));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoriaDTO> update(@PathVariable("id") @Min(1) Long id, @RequestBody Categoria categoria) {
+        return ok().body(CategoriaDTO.from(service.update(categoria, id)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") @Min(1) Long id) {
+        service.delete(id);
+        return ok().build();
     }
 }
