@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -23,14 +24,14 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank
     @Size(min = 2)
     @Column(nullable = false)
     private String nome;
 
     private String descricao;
 
-    @NotNull
+    @NotBlank
     @Min(value = 0)
     @Column(name = "preco_unitario", nullable = false)
     private BigDecimal precoUnitario;

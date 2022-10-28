@@ -3,6 +3,7 @@ package br.com.alura.comex.exception;
 import br.com.alura.comex.dto.GenericApiError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -35,4 +36,13 @@ public class CustomHandlerAdvice {
                 }).toList();
     }
 
+    @ResponseStatus(BAD_REQUEST)
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public GenericApiError handle(DataIntegrityViolationException exception) {
+        return GenericApiError
+                .Builder()
+                .erro(exception.getLocalizedMessage())
+                .message(exception.getMostSpecificCause().getMessage())
+                .build();
+    }
 }
