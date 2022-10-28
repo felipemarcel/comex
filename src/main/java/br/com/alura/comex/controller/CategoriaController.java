@@ -1,7 +1,7 @@
 package br.com.alura.comex.controller;
 
 import br.com.alura.comex.dto.CategoriaDTO;
-import br.com.alura.comex.exception.NotFoundException;
+import br.com.alura.comex.dto.CategoriaPedidoProjecao;
 import br.com.alura.comex.model.Categoria;
 import br.com.alura.comex.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +17,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.net.URI;
+import java.util.List;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -62,5 +61,10 @@ public class CategoriaController {
     public ResponseEntity<Void> delete(@PathVariable("id") @Min(1) Long id) {
         service.delete(id);
         return ok().build();
+    }
+
+    @GetMapping("/pedidos")
+    public ResponseEntity<List<CategoriaPedidoProjecao>> getReport() {
+        return ok(service.findCategoriaPedidos());
     }
 }

@@ -1,6 +1,7 @@
 package br.com.alura.comex.service;
 
 import br.com.alura.comex.dto.CategoriaDTO;
+import br.com.alura.comex.dto.CategoriaPedidoProjecao;
 import br.com.alura.comex.exception.NotFoundException;
 import br.com.alura.comex.model.Categoria;
 import br.com.alura.comex.repository.CategoriaRepository;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,5 +43,9 @@ public class CategoriaService {
 
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    public List<CategoriaPedidoProjecao> findCategoriaPedidos() {
+        return repository.listByCategoriaPedido();
     }
 }
