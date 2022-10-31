@@ -9,11 +9,13 @@ import java.util.List;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 
-    @Query(value = "SELECT cat.nome, SUM(ip.quantidade) as quantidade, SUM(p.preco_unitario*ip.quantidade) as montante " +
-            "from comex.categorias cat " +
-            "join comex.produtos p on cat.id = p.categoria_id " +
-            "join comex.itens_pedido ip on p.id = ip.produto_id " +
-            "group by cat.nome",
+    @Query(value = """
+            SELECT cat.nome, SUM(ip.quantidade) AS quantidade, SUM(p.preco_unitario*ip.quantidade) AS montante
+            FROM comex.categorias cat
+            JOIN comex.produtos p ON cat.id = p.categoria_id
+            JOIN comex.itens_pedido ip ON p.id = ip.produto_id
+            GROUP BY cat.nome
+            """,
             nativeQuery = true)
     List<CategoriaPedidoProjecao> listByCategoriaPedido();
 }
